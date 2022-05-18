@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -18,12 +19,28 @@ class _HomePageState extends State<HomePage> {
         title: Text("Home Page"),
       ),
       body: Container(
-          constraints: BoxConstraints.expand(),
-          color: Colors.blue,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Container(color: Colors.red, child: Text("ABC")),
-          )),
+        child: ListView.builder(
+            itemCount: 10,
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                child: ListTile(
+                  title: Text("item ${index + 1}"),
+                  subtitle: Text("ABC D"),
+                  leading: Image.asset("assets/icons/ic_radiator.png"),
+                  trailing: InkWell(
+                    onTap: () {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text("tap on item")));
+                    },
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.greenAccent,
+                    ),
+                  ),
+                ),
+              );
+            }),
+      ),
     );
   }
 }
