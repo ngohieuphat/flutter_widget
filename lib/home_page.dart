@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -19,28 +21,73 @@ class _HomePageState extends State<HomePage> {
         title: Text("Home Page"),
       ),
       body: Container(
-        child: ListView.builder(
-            itemCount: 10,
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                child: ListTile(
-                  title: Text("item ${index + 1}"),
-                  subtitle: Text("ABC D"),
-                  leading: Image.asset("assets/icons/ic_radiator.png"),
-                  trailing: InkWell(
-                    onTap: () {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text("tap on item")));
-                    },
-                    child: Icon(
-                      Icons.delete,
-                      color: Colors.greenAccent,
-                    ),
-                  ),
+          child: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            child: ListTile(
+              onTap: () {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text("Tap on item")));
+              },
+              title: Text("Item ${index + 1}"),
+              subtitle: Text("Do some thing"),
+              leading: Image.asset("assets/images/ic_document.png"),
+              trailing: IconButton(
+                onPressed: () {
+                  if (Platform.isAndroid) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Do you want to delete'),
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context, 'OK');
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        });
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: const Text('Do you want to delete'),
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context, 'OK');
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        });
+                  }
+                },
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.red,
                 ),
-              );
-            }),
-      ),
+              ),
+            ),
+          );
+        },
+      )),
     );
   }
 }
